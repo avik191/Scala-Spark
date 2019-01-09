@@ -1,0 +1,4 @@
+1. Total time spent by each employee on 2/12/2018
+2. Employees with time duration < 8 hours on 2/12/2018
+3. Average time spent by employees on 2/12/2018
+4. Total time spent by each employee throughout the month
