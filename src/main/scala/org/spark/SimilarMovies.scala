@@ -142,7 +142,7 @@ object SimilarMovies {
     
     val scoreThreshold = 0.97
     val coOccurenceThreshold = 50.0
-    val refMovieId = 50
+    val refMovieId = 50 // for movie = "Star Wars"
     
     val filteredMoviePair = moviePairSimilarities.filter(l => {
                                 val movieId1 = l._1._1
