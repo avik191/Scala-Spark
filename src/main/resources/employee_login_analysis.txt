@@ -2,3 +2,6 @@
 2. Employees with time duration < 8 hours on 2/12/2018
 3. Average time spent by employees on 2/12/2018
 4. Total time spent by each employee throughout the month
+5. Average time spent by each employee each day in december
+6. Average time spent by each employees in PT between 15 to 20 december
+7. Average number of time  employees checked in/out throughout december

@@ -22,10 +22,13 @@ object EmployeeWorkingHours {
     val data = sparkContext.textFile("D:\\spark\\employee_login.csv")
     
     val ob = new EmployeeAnalysis
-    ob.getTimeSpentByEachEmp(data)
+    //ob.getTimeSpentByEachEmp(data)
     //ob.getEmpWithDurationLessThan8(data)
     //ob.getAverageTimeSpentByEmployessOn2(data)
     //ob.getTotalTimeSpentEachDayInDecember(data)
+    //ob.getAverageTimeSpentEachDayInDecemeber(data)
+   // ob.getAvgTimeSpentByPTEachDayInInterval(data)
+    ob.getAvgTimeEmpInOutInDec(data)
   }
   
 }
