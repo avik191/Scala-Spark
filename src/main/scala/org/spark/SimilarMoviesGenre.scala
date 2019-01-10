@@ -197,7 +197,7 @@ object SimilarMoviesGenre {
     
     val scoreThreshold = 0.97
     val coOccurenceThreshold = 50.0
-    val refMovieId = 50
+    val refMovieId = 50 // for movie = "Star Wars"
     
     val refList = movieGenre(refMovieId)
     var refMovieGenres = ""
