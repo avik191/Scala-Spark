@@ -28,7 +28,9 @@ object EmployeeWorkingHours {
     //ob.getTotalTimeSpentEachDayInDecember(data)
     //ob.getAverageTimeSpentEachDayInDecemeber(data)
    // ob.getAvgTimeSpentByPTEachDayInInterval(data)
-    ob.getAvgTimeEmpInOutInDec(data)
+    //ob.getAvgTimeEmpInOutInDec(data)
+    //ob.getTotalTimeSpentExcludingBreaks(data)
+    ob.getMaxIntervalForWhichEmpWasOut(data)
   }
   
 }

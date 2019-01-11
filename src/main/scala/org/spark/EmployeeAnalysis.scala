@@ -2,8 +2,9 @@ package org.spark
 
 import org.apache.spark.rdd.RDD
 import scala.io.Source
+import java.util.Collections
 
-class EmployeeAnalysis {
+class EmployeeAnalysis extends java.io.Serializable{
   
   
   def loadEmpIdNames():Map[String,String] = {
@@ -253,6 +254,85 @@ class EmployeeAnalysis {
       val name = empNames(id)
       println(f"${id} \t ${name} \t  ${avg}%.2f times")
     }
+  }
+  
+  
+  //mapping method for getting time spent in office excluding breaks from the iterable timestamp list of each employee
+  def timeSpentInOffice(timestamps : List[Long]) : Long = {
+    //val seq = timestamps.toSeq.sortWith((x,y) => x<y)
+    val seq = timestamps.sortWith(_ < _)
+    var total : Long = 0
+    for(i <- 1 until seq.size by 2){
+      val diff = seq(i).toLong - seq(i-1).toLong
+      total = total + diff
+    }
+    total
+  }
+  
+  def getTotalTimeSpentExcludingBreaks(data : RDD[String]) = {
+    val rdd = data.map(line => {
+                      val temp = line.split(',')
+                      (temp(0),temp(3).toLong,temp(5))
+                  })
+                  
+    val filtered = rdd.filter(data => data._3 == "2/12/2018").map(data => (data._1,data._2)).groupByKey()
+                                                      
+     val list = filtered.mapValues(data => data.toList).mapValues(timeSpentInOffice).mapValues(data => {
+                                                        val seconds = data/1000
+                                                        val hours = seconds / 3600
+                                                        val minutes = (seconds % 3600)/60
+                                                        (hours+"."+minutes).toDouble
+                                                      })
+                                                       
+   val sorted = list.map(data => (data._2,data._1)).sortByKey(false)
+    val empNames = loadEmpIdNames()
+    for(emp <- sorted){
+      val id = emp._2
+      val hour = emp._1
+     
+      val name = empNames(id)
+      println(f"${id} \t ${name} \t  ${hour}%.2f hrs")
+    }
+    
+  }
+  
+  //mapping method for getting max time spent outside office i.e breaks from the iterable timestamp list of each employee
+  def maxTimeSpentOut(timestamps : List[Long]) : Long = {
+    //val seq = timestamps.toSeq.sortWith((x,y) => x<y)
+    val seq = timestamps.sortWith(_ < _)
+    var max : Long = 0
+    for(i <- 1 until (seq.size - 1) by 2){
+      val diff = seq(i+1).toLong - seq(i).toLong
+      if(diff > max) max = diff
+    }
+    max
+  }
+  
+  
+  def getMaxIntervalForWhichEmpWasOut(data : RDD[String]) = {
+     val rdd = data.map(line => {
+                      val temp = line.split(',')
+                      (temp(0),temp(3).toLong,temp(5))
+                  })
+                  
+    val filtered = rdd.filter(data => data._3 == "2/12/2018").map(data => (data._1,data._2)).groupByKey()
+                                                      
+     val list = filtered.mapValues(data => data.toList).mapValues(maxTimeSpentOut).mapValues(data => {
+                                                        val seconds = data/1000
+                                                        val hours = seconds / 3600
+                                                        val minutes = (seconds % 3600)/60
+                                                        (hours+"."+minutes).toDouble
+                                                      })
+                                                       
+   val sorted = list.map(data => (data._2,data._1)).sortByKey(false)
+    val empNames = loadEmpIdNames()
+    for(emp <- sorted){
+      val id = emp._2
+      val hour = emp._1
+     
+      val name = empNames(id)
+      println(f"${id} \t ${name} \t  ${hour}%.2f hrs")
+    }              
   }
   
 }
